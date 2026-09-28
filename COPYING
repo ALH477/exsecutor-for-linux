@@ -1,0 +1,14 @@
+The files in this repository that carry
+`SPDX-License-Identifier: GPL-2.0-only` are licensed under the GNU General
+Public License, version 2, only.
+
+Linux is GPL-2.0-only. This out-of-tree module is written to that licence so
+it can use `EXPORT_SYMBOL_GPL` symbols and so `MODULE_LICENSE("GPL")` does
+not taint.
+
+Exsecutor the compiler remains GPL-3.0-or-later. Do not copy
+`compiler/x86_64/backend_c/prologue.c.in` or the reference prelude into this
+tree. Emitted C, when Phase K2 is done, is Compiler Output under Exsecutor
+LICENSE.EXCEPTION Exception A and is marked GPL-2.0-only at emit time.
+
+Full GPL-2.0 text: https://www.gnu.org/licenses/old-licenses/gpl-2.0.html

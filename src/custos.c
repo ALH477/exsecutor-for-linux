@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0-only
  *
  * Compiler Output of exsc (github:ALH477/exsecutor) at commit
- * 1d46f5838791bf12aa35232fc532b7f075e1b564, under Exsecutor LICENSE.EXCEPTION
+ * 5d9f6a0025665843079d46efa3c8856af5c7ff63, under Exsecutor LICENSE.EXCEPTION
  * Exception A: "You have permission to propagate Compiler Output under terms
  * of your choosing." Relicensed here to GPL-2.0-only so it may link into the
  * GPL-2.0-only kernel. Regenerate with:
@@ -412,6 +412,15 @@ static inline void exsi_st_le(unsigned char *p, unsigned k, uint64_t v)
 # define exsi_st_n exsi_st_be
 #else
 # error "exsecutor: unknown __BYTE_ORDER__"
+#endif
+
+/* K2 item 2: the frame-size limit for consuming builds. A kernel
+ * task gets 16 KB with a guard page; the default limit is one quarter
+ * of that. Compile with -fstack-usage and fail the build when the
+ * .su report names a function at or above this limit. Inert without
+ * the check: one #ifndef/#define pair, no code, no behaviour change. */
+#ifndef EXS_FRAME_LIMIT
+#define EXS_FRAME_LIMIT 4096
 #endif
 
 _Static_assert(sizeof(void *) == 8, "exsecutor: this hospes has 64-bit addresses");

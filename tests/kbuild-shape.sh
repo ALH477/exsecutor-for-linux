@@ -47,7 +47,7 @@ fail() { echo "kbuild-shape FAIL: $*" >&2; exit 1; }
 # starts at the first `#define EXS_NEED_FLOAT` line.
 awk '/^#define EXS_NEED_FLOAT/{p=1} p' "$ROOT/src/custos.c" > "$OUT/custos.committed.c"
 cmp -s "$OUT/custos.regen.c" "$OUT/custos.committed.c" \
-  || fail "src/custos.c is stale — re-emit from $EXSC_CHECKOUT (see the header's regenerate command)"
+  || fail "src/custos.c is stale — re-emit from $EXS_CHECKOUT (see the header's regenerate command)"
 echo "  [ok]   src/custos.c matches the pinned exsc byte-for-byte"
 
 # ── 2. Every object compiles under the kernel flag set ──────────────────────
@@ -75,6 +75,16 @@ imports="$(nm -u "$OUT/custos.o" | awk '{print $2}' | sort -u)"
 [ "$imports" = "exsrt_abortus" ] \
   || fail "custos.o imports more than {exsrt_abortus}: $imports"
 echo "  [ok]   custos.o imports exactly {exsrt_abortus}"
+
+# ── 3b. The emitted unit carries the frame-size limit constant ──────────────
+# K2 item 2, the constant half: every --emitte c unit defines
+# EXS_FRAME_LIMIT (default 4096) so the consuming build's -fstack-usage
+# check has a named bound. The frame budget is already enforced above
+# (every object's largest frame < 4 KB by the .su files).
+if ! grep -q '^#define EXS_FRAME_LIMIT 4096$' "$ROOT/src/custos.c"; then
+  fail "src/custos.c carries no EXS_FRAME_LIMIT 4096 default (K2 item 2 constant)"
+fi
+echo "  [ok]   custos.c carries EXS_FRAME_LIMIT 4096 (K2 item 2 constant)"
 
 # mod.o and exsrt_abortus.o: with the kstub macros they are freestanding, so
 # their undefined symbols are the macro-expanded stubs' own; assert the ONLY

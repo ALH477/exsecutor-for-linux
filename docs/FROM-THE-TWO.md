@@ -33,7 +33,15 @@ Cited from `/home/asher/Documents/EXSECUTOR` at look time:
 - `examples/metronomus/exemplum.c:27` `_Noreturn void exsrt_abortus`. An LSM must **return** `-EPERM`. This repo’s shim `BUG()`s and says so.
 - `tests/conformance/entry13_nonatomic_refero_externus.exsc:23-25` is the only `externus`, and it is a **rejection** (`EXS-E0520`).
 
-Until those six K2 measurements pass, `src/` stays a C stub. No emitted files.
+**Update 2026-10-11:** the first blocker is closed upstream (commit
+`b0aeca3`: the float/SIMD prologue is gated on `EXS_NEED_FLOAT`, emitted
+before the blob; `tests/k2_nosse.sh` and `tests/k2_kbuild.sh` gate it).
+`src/custos.c` is now linked into `exsecutor_enforce-y` and passes
+`tests/kbuild-shape.sh`: kernel flags clean, imports exactly
+`{exsrt_abortus}`, largest frame 48 B, verdicts 0 3 6. The remaining five
+K2 items (frame cap as a compile error, returning trap ABI, module-scope
+const aggregates, `externus` against a live C ABI, kernel capability atoms)
+are still open — and item 3 (returning trap) is what blocks the LSM hook.
 
 ## Order — keep (roadmap item 7)
 

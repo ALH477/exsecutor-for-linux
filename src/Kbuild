@@ -1,6 +1,16 @@
 # SPDX-License-Identifier: GPL-2.0-only
-# Phase K3 will add an emitted unit to exsecutor_enforce-y.
+# custos.o is Exsecutor-emitted C: the DCF datagram gate (examples/custos/)
+# over the entry-23 codec, GPL-2.0-only under Exsecutor LICENSE.EXCEPTION
+# Exception A. It is pure: no allocation, no I/O, no capability clause.
+# Its only import is exsrt_abortus, supplied by exsrt_abortus.o.
+#
+# CAVEAT (roadmap K2 item 3, open): a trap in the emitted unit calls
+# exsrt_abortus, which BUG()s. An LSM must fail closed by RETURNING -EPERM,
+# which the _Noreturn trap ABI cannot do. custos.o is wired in so the Kbuild
+# shape is proven end to end, but nothing here may become a hook until the
+# trap ABI returns a verdict.
+#
 # Do not add prologue.c.in. Do not add Exsecutor runtime.
 
 obj-m := exsecutor_enforce.o
-exsecutor_enforce-y := mod.o exsrt_abortus.o
+exsecutor_enforce-y := mod.o exsrt_abortus.o custos.o

@@ -16,8 +16,8 @@
 #      brings no hidden runtime with it.
 #
 # What this gate does NOT prove: objtool acceptance (ORC unwind, noinstr,
-# uaccess), a real Kbuild link against a kernel tree, or that a trap returns
-# a verdict (K2 item 3 — exsrt_abortus still BUG()s).
+# uaccess), a real Kbuild link against a kernel tree. K2 item 3 (a trap ABI
+# that returns a verdict) is CLOSED by ADR 0020: exsrt_abortus returns -EPERM.
 #
 # Usage: tests/kbuild-shape.sh [EXSECUTOR_CHECKOUT]
 #   EXSECUTOR_CHECKOUT defaults to ../../EXSECUTOR (the sibling checkout).

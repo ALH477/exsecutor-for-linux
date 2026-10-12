@@ -2,6 +2,8 @@
 #ifndef EXSRT_ABORTUS_H
 #define EXSRT_ABORTUS_H
 
-void exsrt_abortus(unsigned kind);
+/* ADR 0020: the trap ABI returns a verdict (int). The kernel host returns
+ * -EPERM (fail closed). The userspace shim never returns. */
+int exsrt_abortus(unsigned kind);
 
 #endif
